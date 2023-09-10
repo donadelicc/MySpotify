@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Playlist Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #1DB954; /* Spotify Green */
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #1AA34A;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create a Playlist</h2>
+
+    <!--LEGGE INN MER FUNKSJONALITET SÅ SNART JEG HAR FIKSET KONTEKSTLENGDEN TIL MODELLEN-->
+
+    <form action="{{ url_for('getPrompt') }}" method="post">
+        <label for="prompt">Playlist Prompt:</label>
+        <input type="text" id="prompt" name="prompt" required>
+
+        <label for="count">Antall sanger (maks 50):</label> <!--MÅ ENDRE HER ETTER JEG FIKSER KONTEKSTLENGDEN-->
+        <input type="number" id="count" name="count" min="1" max="50" required>
+
+        <button type="submit">Generer spilleliste</button>
+    </form>
+
+    <h3>Din nye spilleliste</h1>
+    <ul>
+        {% for song in playlist %}
+        <li>
+            <strong>Song:</strong> {{ song.song }} <br>
+            <strong>Artist:</strong> {{ song.artist }}
+        </li>
+        <br>
+        {% endfor %}
+    </ul>
+
+
+</div>
+
+</body>
+</html>

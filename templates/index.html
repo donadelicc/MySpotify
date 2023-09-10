@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Spotify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+
+        .message {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .mailLink {
+            color: #1DB954;
+            font-weight: bold;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #1AA34A;
+        }
+
+        .description {
+            margin-bottom: 30px;
+        }
+        .loginMsg {
+            font-weight: bold;
+        }
+
+        .login {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #1DB954;
+            text-align: center;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 50px;
+
+        }
+
+        .playlist, .tracks {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #1DB954;
+            text-align: center;
+            border: none;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        a:hover {
+            background-color: #1AA34A;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="message">
+        <p>Denne applikasjonen er ikke i produksjon. Dermed må din spotify konto godkjennes manuelt før du kan benytte deg av applikasjonen. Send meg derfor e-posten som er tilknyttet din Spotify konto til meg under:</p>
+        <br>
+        <a class="mailLink" href="mailto:preb1anders1@gmail.com">SEND MEG DIN SPOTIFY E-POST HER</a>
+
+
+    </div>
+
+    <div class="container">
+        <h1>Velkommen til My Spotify - din helt egen spotify assistent!</h1>
+        <p class="description">Hent ut statistikk fra din konto eller benytt AI til å opprette spillelister!</p>
+        
+        {% if session['logged_in'] %}
+        <p class="loginMsg">Innlogging vellykket!</p>
+        {% else %}
+        <p class="loginMsg">Logg inn med Spotify-kontoen din for å fortsette:</p>
+        <a class="login" href="{{ url_for('redirectPage') }}">Logg inn med Spotify</a>
+        {% endif %}
+
+        <a class="playlist" href="{{ url_for('getPrompt') }}">Lag en spilleliste</a>
+        <a class="tracks" href="{{ url_for('getSavedTracks') }}">Se statistikk</a>
+    </div>
+
+</body>
+
+</html>
