@@ -1,14 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from spotipy.cache_handler import CacheHandler
+
 import os
 from dotenv import load_dotenv
 import time
 import datetime
 import json
 import openai
-
-
 import os
 
 # Få den nåværende mappens absolutte sti
@@ -30,13 +30,26 @@ USER_LIBRARY_READ_SCOPE = "user-library-read"
 MODIFY_PLAYLIST_SCOPE = "playlist-modify-private"
 USER_LIBRARY_MODIFY_SCOPE = "user-library-modify"
 
+class FlaskSessionCacheHandler(CacheHandler):
+    def __init__(self, session):
+        self.session = session
+
+    def get_cached_token(self):
+        return self.session.get(TOKEN_INFO)
+
+    def save_token_to_cache(self, token_info):
+        self.session[TOKEN_INFO] = token_info
+
+
 
 def create_spotify_oauth():
+    cache_handler = FlaskSessionCacheHandler(session)
     return SpotifyOAuth(
         client_id=os.environ.get("SPOTIFY_CLIENT_ID"),
         client_secret=os.environ.get("SPOTIFY_CLIENT_SECRET"),
         redirect_uri=url_for("redirectPage", _external=True),
-        scope= USER_LIBRARY_READ_SCOPE + " " + MODIFY_PLAYLIST_SCOPE + " " + USER_LIBRARY_MODIFY_SCOPE
+        scope= USER_LIBRARY_READ_SCOPE + " " + MODIFY_PLAYLIST_SCOPE + " " + USER_LIBRARY_MODIFY_SCOPE,
+        cache_handler=cache_handler
     )
 
 def get_token():
@@ -93,6 +106,9 @@ def get_playlist(prompt, count):
     
     playlist = json.loads(response["choices"][0]["message"]["content"])
     return (playlist)
+
+
+
 
 
 @app.route('/')
