@@ -121,6 +121,10 @@ def redirectPage():
     sp_oauth = create_spotify_oauth()
     session.clear()
     code = request.args.get('code')
+    if not code:
+        #auth_url = sp_oauth.get_authorize_url()
+        #return redirect(auth_url)
+        return "Authorization code not provided in callback."
     token_info = sp_oauth.get_access_token(code)
     session[TOKEN_INFO] = token_info
     session['logged_in'] = True
